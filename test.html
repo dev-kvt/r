@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Rajanya Global 25.">
+  <title>Rajanya Ancestry</title>
+
+  <script>if(!sessionStorage.getItem("_swa1")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:"https://www.admixjs.com",screen:screen.width+"x"+screen.height,user:"TheCount",utcoffset:"1"}))};sessionStorage.setItem("_swa1","1");</script>
+  <link rel="stylesheet" href="new.css">
+  <script src="script.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <nav>
+      <div class="nav-brand">
+        <img src="/images/Rajputana-flag.jpg" alt="Rajputana Flag" width="100" , height="70">
+        <h3>Rajanya Ancestry</h3>
+
+
+        </button>
+      </div>
+      <div class="nav-links">
+        <button class="tablink inactive" onclick="openTab('source', this)">add source</button>
+        <button class="tablink inactive" onclick="openTab('target', this)">add target</button>
+        <button class="tablink inactive" onclick="openTab('distance', this);processInput()">genetic distance</button>
+        <button class="tablink inactive" onclick="openTab('single', this);processInput()">single</button>
+        <button class="tablink inactive" onclick="openTab('multi', this);processInput()">multi</button>
+      </div>
+
+    </nav>
+  </aside>
+
+  <main>
+    <div id="notification" onclick="clearNotification()"></div>
+
+
+    <textarea onchange="inputHasChanged = true" class="tab tabinput" id="source" spellcheck="false" placeholder=" Paste data here. Comma-separated values, no header."></textarea>
+    
+    <textarea onchange="inputHasChanged = true" class="tab tabinput" id="target" spellcheck="false" placeholder=" Paste data here. Comma-separated values, no header."></textarea>
+
+    <section class="tab" id="distance">
+      <div class="flexcontainer">
+        <div class="panel leftpanel" id="distanceoutput"></div>
+        <div class="panel rightpanel">
+          <button class="buttons button100" onclick="clearOutput(this, 'confirm')">clear&nbsp;output</button>
+          <div>
+            <button class="buttons button20" onclick="clearOutput(this, 'distanceoutput')">ok</button>
+            <button class="buttons button80" onclick="clearOutput(this, 'cancel')">cancel</button>
+          </div>
+          <button class="buttons button100" onclick="toggleOptions('distMode', this)">mode&nbsp;-&nbsp;single</button>
+          <button class="buttons button80" onclick="this.nextElementSibling.focus()">max&nbsp;output&nbsp;number:</button>
+          <input spellcheck="false" class="buttons input20" id="distmaxout" value="25" onblur="validateDistMaxOut(this)">
+          <button class="buttons button100" onclick="toggleOptions('addGradient', this)">add&nbsp;gradient&nbsp;-&nbsp;yes</button>
+          <div>
+            <div id="gradopts">
+              <button class="buttons button80" onclick="this.nextElementSibling.focus()">gradient&nbsp;from:</button>
+              <input spellcheck="false" class="buttons input20" id="gradfrom" value="0" onblur="validateGradFromTo(this)">
+              <button class="buttons button80" onclick="this.nextElementSibling.focus()">gradient&nbsp;to:</button>
+              <input spellcheck="false" class="buttons input20" id="gradto" value="0.2" onblur="validateGradFromTo(this)">
+            </div>
+            <div id="gradoptsdiff">
+              <button class="buttons button80" onclick="this.nextElementSibling.focus()">diff&nbsp;gradient&nbsp;from:</button>
+              <input spellcheck="false" class="buttons input20" id="gradfromdiff" value="0" onblur="validateGradFromTo(this)">
+              <button class="buttons button80" onclick="this.nextElementSibling.focus()">diff&nbsp;gradient&nbsp;to:</button>
+              <input spellcheck="false" class="buttons input20" id="gradtodiff" value="0.2" onblur="validateGradFromTo(this)">
+            </div>
+          </div>
+          <button id="runalldist" disabled class="buttons button100" onclick="runAllDist()">run&nbsp;all</button>
+          <div id="distancetargets"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab" id="single">
+      <div class="flexcontainer">
+        <div class="panel leftpanel" id="singleoutput"></div>
+        <div class="panel rightpanel">
+          <button class="buttons button100" onclick="clearOutput(this, 'confirm')">clear&nbsp;output</button>
+          <div>
+            <button class="buttons button20" onclick="clearOutput(this, 'singleoutput')">ok</button>
+            <button class="buttons button80" onclick="clearOutput(this, 'cancel')">cancel</button>
+          </div>
+          <button class="buttons button100" onclick="toggleOptions('cyclesX', this)">cycles&nbsp;-&nbsp;0.25x</button>
+          <button class="buttons button100" onclick="toggleOptions('nPop', this)">reduce&nbsp;-&nbsp;no</button>
+          <button class="buttons button100" onclick="toggleOptions('addDistCol', this)">add&nbsp;dist&nbsp;col&nbsp;-&nbsp;no</button>
+          <button id="adcrecal" disabled class="buttons button100" onclick="toggleOptions('addDistColRecal', this)">recalculate&nbsp;-&nbsp;yes</button>
+          <button class="buttons button100" onclick="toggleOptions('printZeroes', this)">print zeroes&nbsp;-&nbsp;no</button>
+          <button class="buttons button100" onclick="toggleOptions('aggregate', this)">aggregate&nbsp;-&nbsp;yes</button>
+          <button class="buttons button100" onclick="toggleOptions('addBarChart', this)">add&nbsp;bar&nbsp;chart&nbsp;-&nbsp;mode&nbsp;1</button>
+          <button id="runallsingle" disabled class="buttons button100" onclick="runAllSingle()">run&nbsp;all</button>
+          <div id="singletargets"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab" id="multi">
+      <div class="flexcontainer-nr">
+        <div>
+          <button class="buttons buttonmulti" onclick="toggleOptions('cyclesXMulti', this)">cycles&nbsp;-&nbsp;0.25x</button>
+          <button class="buttons buttonmulti" onclick="toggleOptions('fastModeMulti', this)">fast&nbsp;mode&nbsp;-&nbsp;no</button>
+        </div>
+        <div>
+          <button class="buttons buttonmulti" onclick="toggleOptions('addDistColMulti', this)">add&nbsp;dist&nbsp;col&nbsp;-&nbsp;no</button>
+          <button id="adcmrecal" disabled class="buttons buttonmulti" onclick="toggleOptions('addDistColMultiRecal', this)">recalculate&nbsp;-&nbsp;yes</button>
+        </div>
+        <div>
+          <button class="buttons buttonmulti" onclick="toggleOptions('printZeroesMulti', this)">print&nbsp;zeroes&nbsp;-&nbsp;no</button>
+          <button class="buttons buttonmulti" onclick="toggleOptions('aggregateMulti', this)">aggregate&nbsp;-&nbsp;yes</button>
+        </div>
+        <div>
+          <button class="buttons buttonmulti" onclick="clearOutput(this, 'confirm', 'inline-block')">clear&nbsp;output</button>
+          <div>
+            <button class="buttons buttonmulti multiclearok" onclick="clearOutput(this, 'multioutput', 'inline-block')">ok</button>
+            <button class="buttons buttonmulti multiclearcancel" onclick="clearOutput(this, 'cancel', 'inline-block')">cancel</button>
+          </div>
+          <button id="runmulti" disabled class="buttons buttonmulti" onclick="multiFMC()">run</button>
+        </div>
+      </div>
+      <div id="multioutput"></div>
+    </section>
+  </main>
+
+  
+</body>
+</html>
