@@ -5,7 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Rajanya Global 25.">
   <title>Rajanya Ancestry</title>
-
+  <script>
+    // Dark mode initialization
+    (function() {
+      const darkMode = localStorage.getItem('darkMode');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (darkMode === 'enabled' || (darkMode === null && prefersDark)) {
+        document.documentElement.classList.add('dark-mode');
+      }
+    })();
+  </script>
   <script>if(!sessionStorage.getItem("_swa1")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:"https://www.admixjs.com",screen:screen.width+"x"+screen.height,user:"TheCount",utcoffset:"1"}))};sessionStorage.setItem("_swa1","1");</script>
   <link rel="stylesheet" href="new.css">
   <script src="script.js"></script>
@@ -13,7 +22,7 @@
 <body>
   <aside class="sidebar">
     <nav>
-      <div class="nav-brand">
+  <div class="nav-brand">
       <a href="https://pastebin.com/CKZsErWA" target="_blank">
   <img src="/images/Rajputana-flag.jpg" alt="Rajputana Flag" width="100" height="70">
 </a>
@@ -21,25 +30,45 @@
 <h3>
   <a href="https://pastebin.com/CKZsErWA" target="_blank">Rajanya Ancestry</a>
 </h3>
-
-
-
-        </button>
-      </div>
-      <div class="nav-links">
-        <button class="tablink inactive" onclick="openTab('source', this)">add source</button>
-        <button class="tablink inactive" onclick="openTab('target', this)">add target</button>
-        <button class="tablink inactive" onclick="openTab('distance', this);processInput()">genetic distance</button>
+ </div>
+<div class="nav-links">
+        <button class="tablink" id="defaulttab" onclick="openTab('data', this)">data</button>
+        <button class="tablink inactive" onclick="openTab('source', this)">source</button>
+        <button class="tablink inactive" onclick="openTab('target', this)">target</button>
+        <button class="tablink inactive" onclick="openTab('distance', this);processInput()">distance</button>
         <button class="tablink inactive" onclick="openTab('single', this);processInput()">single</button>
         <button class="tablink inactive" onclick="openTab('multi', this);processInput()">multi</button>
       </div>
-
     </nav>
   </aside>
 
   <main>
     <div id="notification" onclick="clearNotification()"></div>
 
+    <section class="tab" id="data">
+      <div class="flexcontainer-data">
+        <div class="panel leftpanel" id="xx">
+          <div class="filteropt">
+            <div class="div-100">
+              <input spellcheck="false" class="buttons input-data" id="filter" value="" placeholder="Type to filter" oninput="dataFilter();">
+              <button class="buttons filterReset" onclick="resetFilter()">×</button>
+            </div>
+          </div>
+          <div class="filteropt">
+            <button class="buttons" onclick="toggleOptions('addRep', this)">add&nbsp;to:</button>
+            <button class="buttons" onclick="copyTo('source', this)">source</button>
+            <button class="buttons" onclick="copyTo('target', this)">target</button>
+          </div>
+          <textarea readonly spellcheck="false" class="" id="filteroutput" value="" placeholder="Press 'OPEN FILES' button and select one or multiple files to load CSV spreadsheets.&#10;Lines starting with a comma (headers) will be omitted.&#10;&#10;Press 'Shift' to focus the search field.&#10;Start typing to filter the list of samples.&#10;&#10;Search is case sensitive.&#10;&#10;'Space' - AND&#10;'!' - negation&#10;'?' - OR&#10;'abc def' - abc AND def&#10;'!abc' - NOT abc&#10;'abc !def' - abc AND NOT def&#10;'abc ? def' - abc OR def&#10;'abc def ? ghi' - (abc AND def) OR (ghi)&#10;'abc def ? abc ghi' - (abc AND def) OR (abc AND ghi)&#10;',abc' - starts with abc&#10;'abc,' - ends with abc&#10;'!,abc' - does NOT start with abc&#10;'!abc,' - does NOT end with abc&#10;'abc !def,' - abc AND does NOT end with def"></textarea>
+        </div>
+        <div class="panel rightpanel">
+          <label for="localfiles" class="buttons button100">
+            Open files<input type="file" name="Open files" multiple="" id="localfiles" onchange="processFiles(this)">
+          </label>
+          <div id="datalist"></div>
+        </div>
+      </div>
+    </section>
 
     <textarea onchange="inputHasChanged = true" class="tab tabinput" id="source" spellcheck="false" placeholder=" Paste data here. Comma-separated values, no header."></textarea>
     
@@ -127,6 +156,15 @@
     </section>
   </main>
 
-  
+  <script>
+    initialize();
+    
+    // Dark mode toggle function
+    function toggleDarkMode() {
+      const html = document.documentElement;
+      const isDark = html.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+    }
+  </script>
 </body>
 </html>
